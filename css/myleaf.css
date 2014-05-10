@@ -1,0 +1,278 @@
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css");
+ body {
+    margin: 10px;
+}
+.label {
+    background-color:white;
+    color:#61BA9E;
+}
+.opt {
+    cursor: pointer;
+    color:#61BA9E;
+}
+.active {
+    border-color: #61BA9E;
+}
+#post {
+    margin-top:10px;
+}
+.rowCell {
+    background: white;
+    padding: 4px;
+}
+.btn-default:hover {
+    color:#61BA9E;
+    background-color:white;
+}
+a:hover, a:active {
+    color:3E3E3E;
+    cursor:pointer;
+}
+span.glyphicon, navbar-brand {
+    font-size: 1.2em;
+}
+.pull-left {
+    margin:0.5em 0.3em 0.3em 0.7em;
+}
+.demo h3 {
+    margin-top: 10px;
+    color: #662546;
+    font-size: 21px;
+    font-weight: 900;
+    line-height: 0.5em;
+    margin: 0 0 12;
+    padding: 0;
+    text-transform:uppercase;
+}
+.updater {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.updater .inner {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DDDDDD;
+    position: relative;
+}
+/* -----------------------------------------
+   Preview
+----------------------------------------- */
+ .down-arrow {
+    background-image: url(http://embed.ly/static/images/demos/up.png);
+    display: block;
+    width: 11px;
+    height: 8px;
+    position: absolute;
+    top: 86px;
+    left: 34px;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.updater .fa-pencil {
+    display: block;
+    width: 14px;
+    height: 14px;
+    overflow: hidden;
+    margin: 7px;
+}
+.updater textarea {
+    
+    background: transparent;
+    overflow: hidden;
+    color: #777;
+    margin: 0;
+    resize: none;
+    border: 0;
+    box-shadow: 0;
+    box-shadow: none;
+    max-height: 30px;
+    width:300px;
+}
+.updater .inner {
+    background: #fff;
+    border: 1px solid #dddddd;
+    position: relative;
+    
+}
+.updater.active textarea {
+    min-height: 50px;
+}
+.updater.active .inner {
+    border-bottom: 0;
+}
+.updater.active .options {
+    display: block;
+}
+.updater .options {
+    text-align: right;
+    background-color: #e1e1e1;
+    border-bottom: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
+    border-left: 1px solid #dddddd;
+    padding: 2px;
+    display: none;
+    height:55px;
+}
+.updater .options .button {
+    padding: 7px 12px 8px;
+}
+.update {
+    background-color: #fff;
+    padding: 10px;
+    margin: 10px 0;
+}
+.update > p {
+    padding: 10px;
+    border-bottom: 1px solid #dddddd;
+}
+.update .thumbnail {
+    float: left;
+    width: 30%;
+}
+.update .attributes {
+    float: left;
+    width: 70%;
+}
+.update .attributes span {
+    display: block;
+}
+.selector-wrapper .selector {
+    position: relative;
+    min-height: 100px;
+    padding: 10px 5px;
+    border-top: 1px dashed #dddddd;
+    border-right: 1px solid #dddddd;
+    border-left: 1px solid #dddddd;
+    background-color: #fff;
+}
+.selector-wrapper .selector .attributes {
+    float: left;
+    width: 80%;
+}
+.selector-wrapper .selector .attributes .title {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 2px;
+    line-height: 16px;
+}
+.selector-wrapper .selector .attributes .provider {
+    color: #666;
+    display: block;
+    font-size: 12px;
+}
+.selector-wrapper .selector .attributes p {
+    font-size: 12px;
+    border: 0;
+    text-align: left;
+    margin-bottom: 0;
+    line-height: 1.2;
+    padding: 5px 15px 0 0;
+}
+.selector-wrapper .selector .attributes .meta a {
+    display: block;
+    float: none;
+    color: #000;
+    height: 22px;
+    width: 25px;
+    border: 1px solid #dddddd;
+}
+.selector-wrapper .selector .attributes .meta ul {
+    list-style: none;
+    margin: 0;
+}
+.selector-wrapper .selector .attributes .meta ul li {
+    float: left;
+    margin: 0;
+    text-align: center;
+}
+.selector-wrapper .selector .attributes .meta ul li:last-child {
+    margin-left: -1px;
+    margin-right: 5px;
+}
+.selector-wrapper .selector .attributes .meta .pages {
+    display: block;
+    display: block;
+    font-size: 11px;
+    color: #333;
+}
+.selector-wrapper .selector .attributes .meta .pages span {
+    color: #000;
+}
+.selector-wrapper .selector .attributes .meta .no-thumbnail {
+    display: block;
+}
+.selector-wrapper .selector .action {
+    position: absolute;
+    top: 5px;
+    right: 7px;
+}
+.thumb {
+    float: left;
+    margin: 0 10px 0 0;
+    position: relative;
+    width: 100px;
+}
+.thumb .items {
+    position: relative;
+    overflow: hidden;
+    padding: 0px;
+    height: 100px;
+    width: 100px;
+}
+.thumb .items .images {
+    position: absolute;
+    width: 300em;
+    margin: 0px;
+    padding: 0px;
+    left: 0px;
+}
+.thumb .items .images li {
+    list-style: none;
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    width: 100px;
+    height: 100px;
+}
+.thumb .items .images img {
+    max-width: 100px;
+    max-height: 100px;
+}
+.thumb .controls {
+    top: 0px;
+    left: 0px;
+    width: 100px;
+    position: absolute;
+    height: 16px;
+    z-index: 1;
+    background-color: #222;
+    opacity: 0.5;
+}
+.thumb .controls .left, .thumb .controls .right, .thumb .controls .nothumb {
+    display: block;
+    position: absolute;
+    top: 2px;
+    color: #fff;
+}
+.thumb .controls .left:hover, .thumb .controls .right:hover, .thumb .controls .nothumb:hover {
+    text-decoration: none;
+}
+.thumb .controls .nothumb {
+    right: 2px;
+    font-weight: bold;
+    top: 1px;
+}
+.thumb .controls .left {
+    left: 2px;
+}
+.thumb .controls .right {
+    left: 16px;
+}
+.thumb .nothumb {
+    right: 2px;
+    font-weight: bold;
+    top: 1px;
+}

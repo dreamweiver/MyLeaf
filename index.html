@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>My Leaf Timeline</title>
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="http://cdn.embed.ly/jquery.embedly-3.1.1.min.js"></script>
+  <script src="http://cdn.embed.ly/jquery.preview-0.3.2.min.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="http://cdn.embed.ly/jquery.preview-0.3.2.css" />
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="css/myleaf.css" />
+  <script  type="text/javascript" >
+   
+	$(document).ready(function() {
+		//default Enter key functionality to post the content on timeline
+		$(document).keypress(function(e) {
+		  if(e.which == 13) {
+			 e.preventDefault();
+			 $('#post').click();
+		  }
+		});
+
+		// Sets up the default key for the jQuery Plugin.
+		$.embedly.defaults.key = '170b9c5557f94d82a766c698654d363f';
+	 
+		//Initialise embedly plugin with the app-key 
+		$('.inner textarea').embedly({
+			key: '170b9c5557f94d82a766c698654d363f'
+		});
+
+		//$('#id_status').on('click',function(){$('#post').focus()});
+		$('#dd').hide();
+		var movName = "";
+		var videoRes = "";
+		var previewBit = 0;
+
+		$('.dropdown-menu li').on('click', function () {
+			movName = $(this).find('a').html();
+			$('#id_status').val("User3 is watching:" + movName);
+		});
+
+		$('.opt').on('click', function () {
+		   $('.selector').remove();
+		   previewBit = 0;
+		   $('#dd').hide();
+		   $('.opt').css('color', '#61BA9E');
+		   $(this).css('color', 'white');
+
+		   var offset = $('.options').position().left;
+		   $('#id_status').focus();
+			if ($(this).hasClass('fa-external-link')) {
+				offset += 86;
+				$('#id_status').attr('placeholder', 'External Link ?');
+				previewBit = 1;
+			} else if ($(this).hasClass('fa-quote-left')) {
+				offset += 30;
+				$('#id_status').attr('placeholder', 'Whats Up ?');
+			} else if ($(this).hasClass('fa-camera')) {
+				offset += 142;
+				$('#id_status').attr('placeholder', 'Snaps ?');
+			} else if ($(this).hasClass('fa-smile-o')) {
+				offset += 254;
+				$('#id_status').attr('placeholder', 'Movie Name ?');
+				$('#dd').show();
+			} else {
+				offset += 198;
+				$('#id_status').attr('placeholder', 'Video Link ?');
+			}
+			$('.down-arrow').css('left', offset);
+		});
+	 
+		// Add media button.
+		function getVideo(url) {
+			$.embedly.oembed(url, {
+				query: {
+				maxwidth: 400
+				}
+			})
+			.progress(function (obj) {
+				if (obj.type === 'photo') {
+					videoRes  =$("<img src=\"+url +\" height=\"100px\" width=\"100px\"/>");
+				} else if (obj.type === 'rich' || obj.type === 'video') {
+					// Add Video or Rich.
+					videoRes = obj.html;
+				} else {
+					// Just a link type, so throw an error to the user.
+				}
+			});
+		}
+
+		$('#post').on('click', function () {
+			$('.attributes p').html($('.attributes p a').html());
+			var post = $('#id_status').val();
+			$('.attributes a').prop('href', post);
+			$('.attributes a').prop('contenteditable', 'false');
+			var content = "",
+			newpost = "";
+		 
+			if (post === null || post === "") {
+				$('#id_status').focus();
+				return;
+			}
+			$('#id_status').val("");
+			$('#id_status').focus();
+			if ($('#id_status').attr('placeholder') == 'External Link ?') {
+				content = $('.selector').clone().html();
+				$('.selector-wrapper .selector').remove();
+				previewBit=1;
+			} else if ($('#id_status').attr('placeholder') == 'Whats Up ?') {
+				content = post;
+			} else if ($('#id_status').attr('placeholder') == 'Snaps ?') {
+				//Image Posting
+				var imagePan="<div class=\"panel panel-default\"><div class=\"panel-body\"><img src="+post +" width=\"300px\" height=\"200px\" /></div><div class=\"panel-footer\"><a href="+post+" target=\"_blank\">"+post+"</a> </div></div>";
+				content = imagePan;
+			} else if ($('#id_status').attr('placeholder') == 'Movie Name ?') {
+			//Movie Comments
+			var lbl = "<h4>User 3 is watching:<span class=\"label label-default\">" + movName + "</span></h4>";
+			content = lbl;
+			} else {
+				//video Posting
+				getVideo(post);
+				var videoPan="<div class=\"panel panel-default\"><div class=\"panel-body\">"+videoRes +"</div><div class=\"panel-footer\"><a href="+post+" target=\"_blank\">"+post+"</a> </div></div>";
+				content = videoPan;
+			}
+		
+			$('.selector-wrapper .selector').remove();
+				newPost = "<div class=\"row\" >" +
+					"<div class=\"col-md-1 \"></div>";
+
+				if ($('.feeds div:first-child').find('.active').index() == 1) {
+					newPost += "<div class=\"col-md-5 rowCell \"></div>" +
+						"<div class=\"col-md-5 well rowCell active\">" + content + "</div>";
+				} else {
+					newPost += "<div class=\"col-md-5 well rowCell active\">" + content + "</div>" +
+						"<div class=\"col-md-5 rowCell \"></div>";
+				}
+
+			newPost += "<div class=\"col-md-1 \"></div></div>";
+			$(newPost).hide().prependTo('.feeds').fadeIn('slow', function () {  });
+		});
+
+		var selector_source = ['<div class="selector">',
+			'<div class="thumb">',
+			'<div class="items">',
+			'<ul class="images">',
+			'{{!#each images }}',
+			'<li><img src="{{!this.url}}"/></li>',
+			'{{!/each}}',
+			'</ul>',
+			'</div>',
+			'</div>',
+			'<div class="attributes">',
+			'<span class="title">{{!title}}</span>',
+			'<span class="provider">{{!provider_url}}</span>',
+			'<p>{{!description}}</p>',
+			'<div class="meta">',
+			'<ul>',
+			'<li><a href="#" class="left"><i class="fa fa-caret-left"></i></a></li>',
+			'<li><a href="#" class="right"><i class="fa fa-caret-right"></i></a></li>',
+			'</ul>',
+			'<span class="pages">',
+			'<span class="current">1</span> of <span>{{!images_count}}</span> Choose a Thumbnail</span>',
+			'</span>',
+			'</div>',
+			'<span class="no-thumbnail"><input type="checkbox"/>No Thumbnail</span>',
+			'</div>',
+			'<div class="action"><a href="#" class="close"><i class="fa fa-remove"></i></a></div>',
+			'<div class="cf"></div>',
+			'</div>'].join('');
+
+		var display_source = ['<div class="row">',
+			'<div class="twelve columns">',
+			'<div class="update">',
+			'<p>{{!status}}</p>',
+			'<div class="meta">',
+			'<div class="thumbnail">',
+			'<img src="{{!thumbnail_url}}"/>',
+			'</div>',
+			'<div class="attributes">',
+			'<span class="title">{{!title}}</span>',
+			'<span class="provider">{{!provider_url}}</span>',
+			'<p>{{!description}}</p>',
+			'</div>',
+			'</div>',
+			'<div class="cf"></div>',
+			'</div>',
+			'</div>',
+			'</div>'].join('');
+
+		var selector = {
+			render: function ($elem, data, preview) {
+		  
+				// We need to know what to do when everything is closed up.
+				$elem.on('close', function () {
+					$('.selector-wrapper').html('');
+				});
+
+				// set the images count;
+				data.images_count = data.images.length;
+
+				// Create the handlebars template.
+				var template = Handlebars.compile(selector_source);
+				var html = template(data);
+				$('.selector-wrapper').html(html);
+
+				// if we close the selector, do the work.
+				$('.selector-wrapper .close').on('click', function () {
+					$('#id_status').trigger('close');
+					$('.selector').remove();
+					return false;
+				});
+
+				// Set up the thumb.
+				$('.thumb').thumb({
+					onchange: function (img) {
+						if (img === null) {
+							preview.update('thumbnail_url', null);
+						} else {
+							preview.update('thumbnail_url', $(img).attr('src'));
+						}
+					}
+				});
+
+				// set up the click events for toggle.
+				$('.left').on('click', function () {
+					$('.thumb').trigger('left');
+					$('.meta .current').text($('.thumb').data('current'));
+					return false;
+				});
+				$('.right').on('click', function () {
+					$('.thumb').trigger('right');
+					$('.meta .current').text($('.thumb').data('current'));
+					return false;
+				});
+				$('.no-thumbnail input').on('change', function () {
+					// Toogle the thumbnail information.
+				   $('.meta').toggle();
+					var action = $(this).prop('checked') ? 'hide' : 'show';
+					$('.thumb').trigger(action);
+				});
+			
+			}
+		};
+
+
+
+		// Set up preview on the status element.
+		$('#id_status').preview({
+			selector: selector
+		}).on('focus', function () {
+			$(this).parents('.updater').addClass('active');
+		});
+
+		// If the user click post render the display template.
+		$('.updater .button').on('click', function () {
+			// Get the data stored on the element.
+			var data = $('#id_status').data('preview');
+			// add the status
+			data.status = $('#id_status').val();
+
+			// Close up shop.
+			$('#id_status').trigger('close');
+			$('#id_status').val('');
+			$('.updater').removeClass('active');
+
+			// Get the template and insert the html.
+			var display_template = Handlebars.compile(display_source);
+			var html = display_template(data);
+				$('#feed').append(html);
+		});
+
+			
+		// Clean up the input after focus.
+		$('.comment-add input').on('focus', function () {
+			$('.comment-add input')
+				.removeClass('error')
+				.siblings('small').remove();
+		});
+
+		$('.comment-post').on('click', function () {
+			// Add the comment to comments.
+			var html = $('.comment-add p').html();
+
+			// Time of post.
+			var date = new Date();
+			var time = date.getHours() + ':' + date.getMinutes();
+
+			// Create the comment from the html.
+			var $comment = $(['<div class="comment"><p>',
+				html,
+				'</p><p><i class="fa fa-comment-alt"></i> ',
+				'By <span>Anonymous</span>',
+				' at <time>2:45pm</time></p></div>'].join(''));
+
+			// Add the comment.
+			$('.comments').append($comment);
+
+			// Clean up after yourself.
+			$('.comment-add input').val('');
+			$('.comment-add p').html('');
+		});
+	});
+  </script>
+  </head>
+
+	<body>
+		 <nav class="navbar navbar-default navbar-static-top navbar-fixed-top " role="navigation">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button> 
+					<a class="navbar-brand" href="#"> My Leaf  <span class="glyphicon glyphicon-leaf" style="color:green"></span></a>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+		<div class="container" style="margin-top:5%">
+			<div class="row">
+				<div class="col-md-1 rowCell"></div>
+				<div class="col-md-10 well rowCell">
+					<div class="row">
+						<div class="col-md-1 "></div>
+						<div class="col-md-10 well rowCell">
+							<!--status sharing app -->
+							<div class="demo demo-facebook">
+								<h3>My Leaf</h3>
+								<div class="updater">
+									<div class="inner">
+										<textarea id="id_status" placeholder="Whats Up ?"></textarea>
+										<!-- Split button -->
+										<div class="btn-group pull-right" id="dd">
+											<button type="button" class="btn btn-sm  btn-default">Watching</button>
+											<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+												<span class="caret"></span>
+												<span class="sr-only">Toggle Dropdown</span>
+											</button>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="#">300:Rise of an Empire</a>
+												</li>
+												<li><a href="#">Ultimate Spider Man 2</a>
+												</li>
+												<li><a href="#">Transformers 4</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+									<div class="selector-wrapper"></div>
+									<div class="options"> 
+										<i class="down-arrow"></i>
+										<i class="fa fa-quote-left fa-2x pull-left opt"></i>
+										<i class="fa fa-external-link fa-2x pull-left opt"></i>
+										<i class="fa fa-camera fa-2x pull-left opt"></i>
+										<i class="fa fa-youtube-play fa-2x pull-left opt"></i>
+										<i class="fa fa-smile-o fa-2x pull-left opt"></i>
+										<button type="button" class="btn btn-default" id="post">POST</button>
+									</div>
+									<!-- Standard button -->
+								</div>
+								<!--<div id="feed"></div>--></div>
+					</div>
+						<div class="col-md-1 "></div>
+				</div>
+					<div class="feeds">
+					</div>
+			</div>
+				<div class="col-md-1 rowCell"></div>
+		</div>
+
+		<footer></footer>
+	</body>
+</html>
